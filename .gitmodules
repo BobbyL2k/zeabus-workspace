@@ -1,0 +1,6 @@
+[submodule "tensorflowhelper"]
+	path = tensorflowhelper
+	url = https://github.com/BobbyL2k/tensorflowhelper.git
+[submodule "inputpreprocessor"]
+	path = inputpreprocessor
+	url = https://github.com/BobbyL2k/zeabus-inputpreprocessor.git
