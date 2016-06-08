@@ -27,7 +27,7 @@ def main():
 
     life.connect_neural_network(sample_input=batch[0], sample_output=batch[1], will_train=False)
 
-    life.load_saved_model("model2")
+    life.load_saved_model("model1")
     # life.init_var()
 
     print(batch[0].dtype, batch[0].shape)
@@ -37,12 +37,13 @@ def main():
     data_in = batch[0]
     feed_result = life.feed(input_layer_value=data_in)
     hypo = feed_result[0]
-    # print("HYPO SHAPE", hypo.shape)
+    print("HYPO SHAPE", hypo.shape)
+    print(hypo)
     expect = batch[1][0]
-    cv2.imshow("image-in", data_in[0])
-    cv2.imshow("hypo",  ObjClass.combine_label(hypo))
-    cv2.imshow("expect", ObjClass.combine_label(expect))
-    cv2.waitKey(0)
+    # cv2.imshow("image-in", data_in[0])
+    # cv2.imshow("hypo",  ObjClass.combine_label(hypo))
+    # cv2.imshow("expect", ObjClass.combine_label(expect))
+    # cv2.waitKey(0)
     ##
 
     # for counter in range(3000):
@@ -62,7 +63,7 @@ def main():
     #         cv2.imshow("expect", ObjClass.combine_label(expect))
     #         cv2.waitKey(20)
 
-    # life.save_current_model("model2")
+    life.save_current_model("model1")
 
 if __name__ == "__main__":
     try:
