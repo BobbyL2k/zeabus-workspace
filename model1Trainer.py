@@ -11,12 +11,12 @@ def main():
     life = tfh.Life(
         tfh.NeuralNetwork(
             layers=[
-                tfh.ValidationLayer(shape=[None, 512/8 + 4, 640/8 + 4, 3], dtype=tf.uint8),
+                tfh.ValidationLayer(shape=[None, 64 + 4, 80 + 4, 3], dtype=tf.uint8),
                 tfh.OpLayer(tf.to_float),
                 tfh.OpLayer(lambda x: x/255.),
                 tfh.ConvLayer(kernel_width=3, depth_out=30, depth_in=3, padding=False),
                 tfh.ConvLayer(kernel_width=3, depth_out=9, padding=False),
-                tfh.ValidationLayer(shape=[None, 512/8, 640/8, 9], dtype=tf.float32),
+                tfh.ValidationLayer(shape=[None, 64, 80, 9], dtype=tf.float32),
             ]
         )
     )
@@ -35,7 +35,7 @@ def main():
     life.load_saved_model("model1")
     # life.init_var()
 
-    for counter in range(20):
+    for counter in range(500):
 
         batch = data.get_batch(100)
         result = life.train(input_layer_value=batch[0], output_layer_value=batch[1])
