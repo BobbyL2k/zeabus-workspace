@@ -25,7 +25,7 @@ def main():
         )
     )
 
-    data = Data.DataFeeder("data.bak/",
+    data = Data.DataFeeder("data/",
                            filename="FeedCache"+model_name, data_padding=0,
                            label_height=512, label_width=640)
 
@@ -41,7 +41,7 @@ def main():
 
     ##
 
-    for _ in range(10):
+    for _ in range(100):
         batch = data.get_batch(5)
         data_in = batch[0]
         feed_result = life.feed(input_layer_value=data_in)
@@ -50,9 +50,9 @@ def main():
         for index, (img, expect_label) in enumerate(zip(batch[0], batch[1])):
             cv2.imshow("image-in", img)
             cv2.imshow("hypo", ObjClass.combine_label(feed_result[index]))
-            print(feed_result[index])
+            # print(feed_result[index])
             cv2.imshow("expect", ObjClass.combine_label(expect_label))
-            cv2.waitKey(0)
+            cv2.waitKey(30)
 
 if __name__ == "__main__":
     try:
