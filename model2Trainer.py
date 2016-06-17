@@ -20,7 +20,7 @@ def conv_cross_entropy(hypo, actual_value):
 
 def main():
     """Entry point function"""
-    model_name = "model2"
+    model_name = "model2-b"
     life = tfh.Life(
         tfh.NeuralNetwork(
             layers=[
@@ -37,7 +37,7 @@ def main():
         ), cost_function=conv_cross_entropy, optimizer=tf.train.AdamOptimizer(0.001)
     )
 
-    data = Data.DataFeeder("data/",
+    data = Data.DataFeeder("data/", dynamic_load=True,
                            filename="TrainCache", data_padding=4,
                            label_height=64, label_width=80)
 
@@ -48,8 +48,8 @@ def main():
 
     life.connect_neural_network(sample_input=batch[0], sample_output=batch[1], will_train=True)
 
-    life.load_saved_model(model_name+"-save-data")
-    # life.init_var()
+    # life.load_saved_model(model_name+"-save-data")
+    life.init_var()
 
     for counter in range(2000):
 
@@ -67,6 +67,7 @@ def main():
             cv2.imshow("hypo",  ObjClass.combine_label(hypo))
             cv2.imshow("expect", ObjClass.combine_label(expect))
             cv2.waitKey(20)
+            life.save_current_model("auto-save/"+model_name+"-save-data"+str(counter))
 
     life.save_current_model(model_name+"-save-data")
 

@@ -8,7 +8,7 @@ import inputpreprocessor.ObjClass as ObjClass
 
 def main():
     """Entry point function"""
-    model_name = "model2"
+    model_name = "model2-b"
     life = tfh.Life(
         tfh.NeuralNetwork(
             layers=[
