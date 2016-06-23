@@ -20,11 +20,11 @@ def conv_cross_entropy(hypo, actual_value):
 
 def main():
     """Entry point function"""
-    model_name = "model2-b"
+    model_name = "model2-d"
     life = tfh.Life(
         tfh.NeuralNetwork(
             layers=[
-                tfh.ValidationLayer(shape=[None, 64 + 8, 80 + 8, 3], dtype=tf.uint8),
+                tfh.ValidationLayer(shape=[None, 96 + 8, 120 + 8, 3], dtype=tf.uint8),
                 tfh.OpLayer(tf.to_float),
                 tfh.OpLayer(lambda x: x/255.),
                 tfh.ConvLayer(kernel_width=3, depth_out=30, depth_in=3, padding=False),
@@ -32,28 +32,29 @@ def main():
                 tfh.ConvLayer(kernel_width=3, depth_out=40, padding=False),
                 tfh.ConvLayer(kernel_width=3, depth_out=9, padding=False),
                 tfh.OpLayer(tf.sigmoid),
-                tfh.ValidationLayer(shape=[None, 64, 80, 9], dtype=tf.float32),
+                tfh.ValidationLayer(shape=[None, 96, 120, 9], dtype=tf.float32),
             ]
         ), cost_function=conv_cross_entropy, optimizer=tf.train.AdamOptimizer(0.001)
     )
 
-    data = Data.DataFeeder("data/", dynamic_load=True,
+    data = Data.DataFeeder("data/", dynamic_load=False,
                            filename="TrainCache", data_padding=4,
-                           label_height=64, label_width=80)
+                           label_height=96, label_width=120)
 
-    batch = data.get_batch(100)
+    batch = data.get_batch(60)
 
     print(batch[0].dtype, batch[0].shape)
     print(batch[1].dtype, batch[1].shape)
 
     life.connect_neural_network(sample_input=batch[0], sample_output=batch[1], will_train=True)
 
+    # life.load_saved_model("auto-save/"+model_name+"-save-data3.0")
     # life.load_saved_model(model_name+"-save-data")
     life.init_var()
 
-    for counter in range(2000):
+    for counter in range(100):
 
-        batch = data.get_batch(100)
+        batch = data.get_batch(60, shuffle=True)
         result = life.train(input_layer_value=batch[0], output_layer_value=batch[1])
 
         if counter%27 == 0:
@@ -67,7 +68,9 @@ def main():
             cv2.imshow("hypo",  ObjClass.combine_label(hypo))
             cv2.imshow("expect", ObjClass.combine_label(expect))
             cv2.waitKey(20)
-            life.save_current_model("auto-save/"+model_name+"-save-data"+str(counter))
+
+        if counter%100 == 0:
+            life.save_current_model("auto-save/"+model_name+"-save-data"+str(counter/100))
 
     life.save_current_model(model_name+"-save-data")
 

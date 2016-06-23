@@ -4,29 +4,32 @@ import numpy as np
 import tensorflow as tf
 import tensorflowhelper as tfh
 import inputpreprocessor.Data2 as Data
-import inputpreprocessor.ObjClass as ObjClass
+import inputpreprocessor.ObjClass2 as ObjClass
 
 def main():
     """Entry point function"""
-    model_name = "model2-d"
+    model_name = "model3-a"
+    padding_size = 0
+    train_data_height = 512
+    train_data_width = 640
+    batch_size = 5
+
     life = tfh.Life(
         tfh.NeuralNetwork(
             layers=[
-                tfh.ValidationLayer(shape=[None, 512, 640, 3], dtype=tf.uint8),
+                tfh.ValidationLayer(shape=[None, train_data_height + padding_size*2, train_data_width + padding_size*2, 3], dtype=tf.uint8),
                 tfh.OpLayer(tf.to_float),
                 tfh.OpLayer(lambda x: x/255.),
-                tfh.ConvLayer(kernel_width=3, depth_out=30, depth_in=3, padding=True),
-                tfh.ConvLayer(kernel_width=3, depth_out=50, padding=True),
-                tfh.ConvLayer(kernel_width=3, depth_out=40, padding=True),
-                tfh.ConvLayer(kernel_width=3, depth_out=9, padding=True),
-                tfh.OpLayer(tf.sigmoid),
-                tfh.ValidationLayer(shape=[None, 512, 640, 9], dtype=tf.float32),
+                tfh.ConvLayer(kernel_width=5, depth_out=30, depth_in=3, padding=True),
+                tfh.ConvLayer(kernel_width=5, depth_out=20, padding=True),
+                tfh.ConvLayer(kernel_width=3, depth_out=2, padding=True),
+                tfh.ValidationLayer(shape=[None, train_data_height, train_data_width, 2], dtype=tf.float32),
             ]
         )
     )
 
-    data = Data.DataFeeder("data/", dynamic_load=False,
-                           filename="FeedCache"+model_name, data_padding=0,
+    data = Data.DataFeeder("data/", dynamic_load=True,
+                           filename=model_name+"-FeedCache", data_padding=0,
                            label_height=512, label_width=640)
 
     batch = data.get_batch(5)

@@ -12,6 +12,10 @@ data/raw_img/*
 !data/raw_img/Bouy_00003.png
 !data/raw_img/Bouy_00004.png
 !data/raw_img/Bouy_00005.png
-data.bak/*
+data.bak*
+auto-save/
 pg.py
 test.py
+*.swp
+*.swo
+*.npz
