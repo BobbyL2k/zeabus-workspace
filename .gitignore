@@ -1,5 +1,8 @@
 data/label/*
+data/label.test/*
 data/raw_img/*
+data/raw_img.bak/*
+data/raw_img.test/*
 !data/label/Bouy_00000.png
 !data/label/Bouy_00001.png
 !data/label/Bouy_00002.png
