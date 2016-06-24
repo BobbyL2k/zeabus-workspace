@@ -78,8 +78,8 @@ def main():
 
     life.connect_neural_network(sample_input=batch[0], will_train=False)
 
-    # life.load_saved_model(model_name+"-save-data")
-    life.load_saved_model("auto-save/"+model_name+"-save-data15.0")
+    life.load_saved_model(model_name+"-save-data")
+    # life.load_saved_model("auto-save/"+model_name+"-save-data15.0")
     # life.init_var()
 
     print(batch[0].dtype, batch[0].shape)
@@ -100,7 +100,7 @@ def main():
             cv2.imshow("hypo", ObjClass.combine_label(feed_result[index]))
             # print(feed_result[index])
             cv2.imshow("expect", ObjClass.combine_label(expect_label))
-            cv2.waitKey(30)
+            cv2.waitKey(90)
 
 if __name__ == "__main__":
     try:

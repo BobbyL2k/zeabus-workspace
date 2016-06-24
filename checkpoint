@@ -1,2 +1,2 @@
-model_checkpoint_path: "model4-a-save-data"
-all_model_checkpoint_paths: "model4-a-save-data"
+model_checkpoint_path: "model7-a-save-data"
+all_model_checkpoint_paths: "model7-a-save-data"
